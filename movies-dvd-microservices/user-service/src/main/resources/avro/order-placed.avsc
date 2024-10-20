@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "UserPlacedEvent",
+  "namespace": "com.example.moviesdvdmicroservices.event",
+  "fields": [
+    { "name": "id", "type": "string" },
+    { "name": "email", "type": "string" },
+    { "name": "username", "type": "string" },
+    { "name": "password", "type": "string" }
+  ]
+}
