@@ -12,12 +12,13 @@ import lombok.Setter;
 public class CustomerReadOnlyDTO extends BaseDTO {
     public String firstname;
     public String lastname;
-    public Long userId;
+//    public Long userId;
+    public String email;
 
-    public CustomerReadOnlyDTO(Long id, String firstname, String lastname, Long userId) {
+    public CustomerReadOnlyDTO(Long id, String firstname, String lastname,String email) {
         this.setId(id);
         this.firstname = firstname;
         this.lastname = lastname;
-        this.userId=userId;
+        this.email=email;
     }
 }

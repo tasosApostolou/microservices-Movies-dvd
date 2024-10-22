@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-@EnableJpaAuditing
+//@EnableJpaAuditing
 public class UserServiceApplication {
 
     public static void main(String[] args) {

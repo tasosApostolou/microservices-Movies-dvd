@@ -1,5 +1,6 @@
 package com.example.rentalsservice.config;
 
+import com.example.rentalsservice.client.CustomerClient;
 import com.example.rentalsservice.client.InventoryClient;
 import io.micrometer.observation.ObservationRegistry;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,14 @@ import java.time.Duration;
 @Configuration
 @RequiredArgsConstructor
 public class RestClientConfig {
+
 //    private final ObservationRegistry observationRegistry;
+
     @Value("${inventory.url}")
     private String inventoryServiceUrl;
+
+    @Value("${customer.Url}")
+    private String customerServiceUrl;
 
 
 
@@ -34,6 +40,18 @@ public class RestClientConfig {
         var restClientAdapter = RestClientAdapter.create(restClient);
         var httpServiceProxyFactory = HttpServiceProxyFactory.builderFor(restClientAdapter).build();
         return httpServiceProxyFactory.createClient(InventoryClient.class);
+    }
+
+    @Bean
+    public CustomerClient customerClient() {
+        RestClient restClient = RestClient.builder()
+                .baseUrl(customerServiceUrl)
+                .requestFactory(getClientRequestFactory())
+//                .observationRegistry(observationRegistry)
+                .build();
+        var restClientAdapter = RestClientAdapter.create(restClient);
+        var httpServiceProxyFactory = HttpServiceProxyFactory.builderFor(restClientAdapter).build();
+        return httpServiceProxyFactory.createClient(CustomerClient.class);
     }
 
     private ClientHttpRequestFactory getClientRequestFactory() {

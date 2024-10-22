@@ -21,6 +21,10 @@
         <module>movies-service</module>
         <module>registr-service</module>
         <module>api-gateway</module>
+        <module>inventory-service</module>
+        <module>rentals-service</module>
+
+
     </modules>
     <properties>
         <java.version>17</java.version>

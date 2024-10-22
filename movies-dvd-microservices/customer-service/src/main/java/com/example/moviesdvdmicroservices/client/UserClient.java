@@ -17,8 +17,8 @@ import java.util.Optional;
 @Slf4j
     public interface UserClient {
         @PostExchange("api/user/register")
-        @CircuitBreaker(name = "userRegister", fallbackMethod = "fallbackMethod")
-        @Retry(name = "userRegister")
+//        @CircuitBreaker(name = "userRegister", fallbackMethod = "fallbackMethod")
+//        @Retry(name = "userRegister")
         Optional<UserInfoResponse> registerUser(@RequestParam String role, @RequestBody UserRegisterDTO credentials);
 
         Logger log = LoggerFactory.getLogger(UserClient.class);

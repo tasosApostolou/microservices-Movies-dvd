@@ -1,26 +1,26 @@
-package com.example.moviesdvdmicroservices.model;
-
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.io.Serializable;
-import java.util.Set;
-
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "customer_rentals")
-public class Rentals extends AbstractEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long movieId;
-    private int days;
-
-    @ManyToMany(mappedBy = "rentals")
-    private Set<Customer> customers;
-}
+//package com.example.moviesdvdmicroservices.model;
+//
+//import jakarta.persistence.*;
+//import lombok.AllArgsConstructor;
+//import lombok.Getter;
+//import lombok.NoArgsConstructor;
+//import lombok.Setter;
+//
+//import java.io.Serializable;
+//import java.util.Set;
+//
+//@Entity
+//@Getter
+//@Setter
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Table(name = "customer_rentals")
+//public class Rentals extends AbstractEntity implements Serializable {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long movieId;
+//    private int days;
+//
+//    @ManyToMany(mappedBy = "rentals")
+//    private Set<Customer> customers;
+//}

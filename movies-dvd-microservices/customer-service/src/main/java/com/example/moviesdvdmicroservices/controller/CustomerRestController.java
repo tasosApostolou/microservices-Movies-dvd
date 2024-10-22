@@ -51,11 +51,8 @@ public class CustomerRestController {
         }
         Customer createdCustomer;
         try {
-//            System.out.println("-------------------------------------------------- logged in user:---------------------------------------------------------------------"+username);
-//
-//            System.out.println("-------------------------------------------------- logged in user:-------------------"+username);
             createdCustomer = customerService.registerCustomer(dto);
-            CustomerReadOnlyDTO customerReadonlyDTO = new CustomerReadOnlyDTO(createdCustomer.getId(),createdCustomer.getFirstname(),createdCustomer.getLastname(),createdCustomer.getUserClaims().getUserId());
+            CustomerReadOnlyDTO customerReadonlyDTO = new CustomerReadOnlyDTO(createdCustomer.getId(),createdCustomer.getFirstname(),createdCustomer.getLastname(),createdCustomer.getUserClaims().getEmail());
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                     .path("/{id}")
@@ -95,15 +92,12 @@ public class CustomerRestController {
             @ApiResponse(responseCode = "404", description = "Customer not found",
                     content = @Content)})
     @GetMapping("/{customerID}")
-    public ResponseEntity<CustomerReadOnlyDTO> getCustomer(@PathVariable("customerID") Long id,@RequestHeader("Authorization") String username) {
+    public ResponseEntity<CustomerReadOnlyDTO> getCustomer(@PathVariable("customerID") Long id) {
         Customer customer;
-        System.out.println("-------------------------------------------------- logged in user:---------------------------------------------------------------------"+username);
 
-            System.out.println("-------------------------------------------------- logged in user:-------------------"+username);
         try {
             customer = customerService.getCustomerById(id);
-//            CustomerReadOnlyDTO dto = Mapper.mapToReadOnlyDTO(customer);
-            CustomerReadOnlyDTO dto =new CustomerReadOnlyDTO(customer.getId(),customer.getFirstname(),customer.getLastname(),customer.getUserClaims().getUserId());
+            CustomerReadOnlyDTO dto =new CustomerReadOnlyDTO(customer.getId(),customer.getFirstname(),customer.getLastname(),customer.getUserClaims().getEmail());
 
             return ResponseEntity.ok(dto);
         } catch (EntityNotFoundException e) {

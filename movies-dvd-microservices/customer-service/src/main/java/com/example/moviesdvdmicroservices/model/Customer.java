@@ -40,14 +40,14 @@ public class Customer extends AbstractEntity implements Serializable {
         this.firstname = firstname;
         this.lastname = lastname;
     }
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(
-            name = "movies_categories",
-            joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id",nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "movieId",nullable = false)
-    )
-    private Set<Rentals> rentals = new HashSet<>();
+//
+//    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+//    @JoinTable(
+//            name = "movies_categories",
+//            joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id",nullable = false),
+//            inverseJoinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "movieId",nullable = false)
+//    )
+//    private Set<Rentals> rentals = new HashSet<>();
     @Override
     public String toString() {
         return "Customer{" +

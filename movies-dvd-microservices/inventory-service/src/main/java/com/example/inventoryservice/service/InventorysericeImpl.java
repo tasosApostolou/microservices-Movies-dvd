@@ -50,6 +50,7 @@ public class InventorysericeImpl implements IInventoryService{
         }    }
 
     @Override
+    @Transactional
     public AddMovieResponse NewMovieRequest(Long movieId, int quantity) {
         InventoryMovie movie = inventoryRepository.findInventoryMovieByMovieId(movieId);
         if(movie != null){

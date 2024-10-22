@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "RentalPlaceEvent",
+  "namespace": "com.example.moviesdvdmicroservices.event",
+  "fields": [
+    { "name": "id", "type": "string" },
+    { "name": "firstname", "type": "string" },
+    { "name": "lastname", "type": "string" },
+    { "name": "email", "type": "string" },
+    { "name": "status", "type": "string" },
+    { "name": "days", "type": "string" },
+    { "name": "price", "type": "string" }
+
+  ]
+}
