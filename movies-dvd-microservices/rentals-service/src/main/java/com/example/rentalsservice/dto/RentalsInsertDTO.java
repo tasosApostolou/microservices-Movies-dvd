@@ -13,4 +13,13 @@ public class RentalsInsertDTO {
     private double pricePerDay;
     private int days;
 
+    @Override
+    public String toString() {
+        return "RentalsInsertDTO{" +
+                "movieId=" + movieId +
+                ", customerId=" + customerId +
+                ", pricePerDay=" + pricePerDay +
+                ", days=" + days +
+                '}';
+    }
 }

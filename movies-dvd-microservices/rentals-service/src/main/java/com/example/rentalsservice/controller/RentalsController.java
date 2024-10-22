@@ -1,6 +1,6 @@
 package com.example.rentalsservice.controller;
 
-import com.example.mapper.Mapper;
+import com.example.rentalsservice.mapper.Mapper;
 import com.example.rentalsservice.dto.RentalsInsertDTO;
 import com.example.rentalsservice.dto.RentalsReadOnlyDTO;
 import com.example.rentalsservice.exception.RentalNotFoundException;

@@ -1,4 +1,4 @@
-package com.example.mapper;
+package com.example.rentalsservice.mapper;
 
 import com.example.rentalsservice.dto.RentalsReadOnlyDTO;
 import com.example.rentalsservice.model.Rentals;

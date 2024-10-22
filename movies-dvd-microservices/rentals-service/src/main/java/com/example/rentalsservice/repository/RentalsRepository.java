@@ -1,4 +1,4 @@
-package com.example.rentalsservice.service;
+package com.example.rentalsservice.repository;
 
 //import com.example.rentalsservice.model.CustomerDetails;
 //import com.example.rentalsservice.model.CustomerMovieID;

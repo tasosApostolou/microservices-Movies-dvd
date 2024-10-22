@@ -11,10 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentalMessageDTO {
+    public String firstname;
+    public String lastname;
     public Long movieId;
-    public Long customerId;
+    public String email;
     private int days;
     public double price;
-    //    @Enumerated(EnumType.STRING)
-    public Status status;
+
 }

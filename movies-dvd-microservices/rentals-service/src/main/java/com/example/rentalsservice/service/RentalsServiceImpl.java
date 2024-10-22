@@ -6,12 +6,12 @@ import com.example.rentalsservice.exception.RentalNotFoundException;
 //import com.example.rentalsservice.model.MovieDetails;
 import com.example.rentalsservice.model.Rentals;
 import com.example.rentalsservice.model.Status;
+import com.example.rentalsservice.repository.RentalsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,9 +28,12 @@ public class RentalsServiceImpl implements IRentalsService{
         Rentals rental;
 //        MovieDetails movie;
 //        CustomerDetails customer;
+        System.out.println(inventoryClient.rentalRequest(dto.getMovieId()));
 
         try{
             boolean rentalRequest = inventoryClient.rentalRequest(dto.getMovieId());
+            System.out.println("pro rental"+rentalRequest);
+
             if(rentalRequest){
                 //Status APPROVED
                 rental = new Rentals(null,dto.getCustomerId(), dto.getMovieId(), dto.getDays(), dto.getPricePerDay()* dto.getDays(),Status.APPROVED);

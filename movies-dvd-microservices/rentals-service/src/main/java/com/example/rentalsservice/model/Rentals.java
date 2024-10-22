@@ -44,8 +44,6 @@ public class Rentals extends AbstractEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public Rentals(Object o, Long customerId, Long movieId, int days, double v) {
-    }
 
 
 //    @Override

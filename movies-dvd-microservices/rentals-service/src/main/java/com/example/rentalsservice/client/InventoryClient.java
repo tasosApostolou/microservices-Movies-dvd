@@ -5,10 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.PostExchange;
 
 
 public interface InventoryClient {
-    @GetExchange("api/inventory")
+    @PostExchange("api/inventory")
 //    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
 //    @Retry(name = "inventory")
 ////    @TimeLimiter()
