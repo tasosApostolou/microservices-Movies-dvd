@@ -22,8 +22,8 @@ import java.util.Optional;
         Optional<UserInfoResponse> registerUser(@RequestParam String role, @RequestBody UserRegisterDTO credentials);
 
         Logger log = LoggerFactory.getLogger(UserClient.class);
-        default boolean fallbackMethod(String username,String role,Throwable throwable){
-            log.info("Cannot register user for username {}, failure reason: {}",username,throwable.getMessage());
+        default boolean fallbackMethod(String role,UserRegisterDTO dto,Throwable throwable){
+            log.info("Cannot register user for username {}, failure : {}",dto.getUsername(),throwable.getMessage());
             return false;
         }
     }

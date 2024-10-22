@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import lombok.*;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
@@ -14,7 +16,7 @@ import lombok.*;
 @Entity
 //public record UserClaims(@Id Long id, String Username, String role) {
 
-public class UserClaims {
+public class UserClaims implements Serializable {
     @Id
     private Long userId;
     private String username;

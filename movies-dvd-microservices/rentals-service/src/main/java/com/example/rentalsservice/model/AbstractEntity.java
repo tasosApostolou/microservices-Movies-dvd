@@ -20,9 +20,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public abstract class AbstractEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

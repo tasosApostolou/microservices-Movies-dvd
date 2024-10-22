@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+//@IdClass(CustomerMovieID.class)
 @Entity
 @Getter
 @Setter
@@ -20,33 +21,52 @@ public class Rentals extends AbstractEntity implements Serializable {
 
 //    private Long customerId;
 //    private Long movieId;
-@Id
-@ManyToOne()
-@JoinColumn(name = "customer_id")
-private CustomerDetails customer;
+//    @Id
+//    @ManyToOne()
+//    @JoinColumn(name = "customer_id")
+//    private CustomerDetails customer;
+//
+//    @Id
+//    @ManyToOne
+//    @JoinColumn(name = "movie_id")
+//    private MovieDetails movie;
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "movie_id")
-    private MovieDetails movie;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private double price;
+    private Long customerId;
+    private Long movieId;
 
     private int days;
+    private double price;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    public Rentals(Object o, Long customerId, Long movieId, int days, double v) {
+    }
+
+
+//    @Override
+//    public String toString() {
+//        return "Rentals{" +
+//                "customer=" + customer.getCustumerId() +
+//                ", movie=" + movie.getMovieId() +
+//                ", price=" + price +
+//                '}';
+//
+//    }
 
     @Override
     public String toString() {
         return "Rentals{" +
-                "id=" + this.getId() +
-                "customer=" + customer.getCustumerId() +
-                ", movie=" + movie.getMovieId() +
+                "customer=" + getCustomerId() +
+                ", movie=" + getMovieId() +
                 ", price=" + price +
                 '}';
 
     }
+
 
 }

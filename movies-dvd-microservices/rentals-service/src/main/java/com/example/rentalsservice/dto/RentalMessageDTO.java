@@ -13,6 +13,7 @@ import lombok.Setter;
 public class RentalMessageDTO {
     public Long movieId;
     public Long customerId;
+    private int days;
     public double price;
     //    @Enumerated(EnumType.STRING)
     public Status status;

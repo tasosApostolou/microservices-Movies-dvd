@@ -1,55 +1,47 @@
-package com.example.moviesdvdrental.Service;
-
-import com.example.moviesdvdrental.DTOs.RentalDTO.RentalsInsertDTO;
-import com.example.moviesdvdrental.DTOs.RentalDTO.RentalsReadOnlyDTO;
-import com.example.moviesdvdrental.Exceptions.EntityNotFoundException;
-import com.example.moviesdvdrental.RabbitMQ.RabbitMQConfig;
-import com.example.moviesdvdrental.Repositories.CustomerRepository;
-import com.example.moviesdvdrental.Repositories.MoviesRepository;
-import com.example.moviesdvdrental.Repositories.RentalsRepository;
-import com.example.moviesdvdrental.mapper.Mapper;
-import com.example.moviesdvdrental.model.*;
+package com.example.rentalsservice.service;
+import com.example.rentalsservice.client.InventoryClient;
+import com.example.rentalsservice.dto.RentalsInsertDTO;
+import com.example.rentalsservice.exception.RentalNotFoundException;
+//import com.example.rentalsservice.model.CustomerDetails;
+//import com.example.rentalsservice.model.MovieDetails;
+import com.example.rentalsservice.model.Rentals;
+import com.example.rentalsservice.model.Status;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-//import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class RentalsServiceImpl implements IRentalsService{
     private final RentalsRepository rentalsRepository;
-    private final MoviesRepository moviesRepository;
-    private final CustomerRepository customerRepository;
-    private final RabbitTemplate rabbitTemplate;
+    private final InventoryClient inventoryClient;
+//    private final MoviesRepository moviesRepository;
+//    private final CustomerRepository customerRepository;
     @Override
     @Transactional
-    public Rentals AddNewRental( RentalsInsertDTO dto) throws Exception {
-        Rentals rental = new Rentals();
-        Movies movie;
-        Customer customer;
-        try{
-            movie = moviesRepository.findById(dto.getMovieId()).orElseThrow(() -> new EntityNotFoundException(Movies.class,dto.getMovieId()));
-            customer = customerRepository.findById(dto.getCustomerId()).orElseThrow(() -> new EntityNotFoundException(Customer.class,dto.getCustomerId()));
-            rental.addMovie(movie);
-            rental.addCustomer(customer);
-            rental.setPrice(dto.getPrice());
-            rental = rentalsRepository.saveAndFlush(rental);
-            RentalsReadOnlyDTO rentalToSend;
-            rentalToSend = Mapper.mapToReadOnlyDTO(rental);
+    public Rentals AddNewRental(RentalsInsertDTO dto) throws Exception {
+        Rentals rental;
+//        MovieDetails movie;
+//        CustomerDetails customer;
 
-            rabbitTemplate.convertAndSend(RabbitMQConfig.RENTAL_EXCHANGE,"rental",rentalToSend);
+        try{
+            boolean rentalRequest = inventoryClient.rentalRequest(dto.getMovieId());
+            if(rentalRequest){
+                //Status APPROVED
+                rental = new Rentals(null,dto.getCustomerId(), dto.getMovieId(), dto.getDays(), dto.getPricePerDay()* dto.getDays(),Status.APPROVED);
+            }else{
+                // STATUS REJECTED
+                rental = new Rentals(null,dto.getCustomerId(), dto.getMovieId(), dto.getDays(), dto.getPricePerDay()* dto.getDays(),Status.APPROVED);
+
+            }
             log.info("New rental for movie with id"+ dto.getMovieId());
             System.out.println(rental.toString());
-        }catch (EntityNotFoundException e){
+        }catch (Exception e){
             log.error(e.getMessage());
             throw e;
         }
@@ -58,33 +50,17 @@ public class RentalsServiceImpl implements IRentalsService{
     }
 
     @Override
-    public List<Rentals> getRentalsByMovieId(Long movieId) throws EntityNotFoundException {
-        List<Rentals> rentals = new ArrayList<>();
-        Movies movie;
-        try {
-            movie = moviesRepository.findById(movieId).orElseThrow(() -> new EntityNotFoundException(Movies.class,movieId));
-            rentals = movie.getAllRentals().stream().toList();
-            log.info("rentals of movie with id "+ movieId  + " were found");
-        }catch (EntityNotFoundException e){
-            log.error(e.getMessage());
-            throw e;
-        }
-        return rentals;    }
-
-    @Override
-    public List<Rentals> getRentalsByCustomerId(Long customerId) throws EntityNotFoundException {
-        List<Rentals> customerRentals = new ArrayList<>();
-        Customer customer;
-        try {
-            customer = customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException(Customer.class,customerId));
-//            customerRentals = Collections.unmodifiableSet(customer.getRentals()).stream().toList()
-            customerRentals = customer.getAllCustomerRentals().stream().toList();
-            log.info("rentals of customer with id "+ customerId  + " were found");
-        }catch (EntityNotFoundException e){
-            log.error(e.getMessage());
-            throw e;
-        }
-        return customerRentals;
+    public List<Rentals> getRentalsByMovieId(Long movieId) throws RentalNotFoundException {
+        return rentalsRepository.findRentalsByMovieIdAndStatus(movieId,Status.APPROVED);
     }
 
+    @Override
+    public List<Rentals> getRentalsByCustomerId(Long customerId) throws RentalNotFoundException {
+        return rentalsRepository.findRentalsByCustomerIdAndStatus(customerId,Status.APPROVED);
+    }
+
+    @Override
+    public List<Rentals> getRentalsApproved() throws RentalNotFoundException {
+        return rentalsRepository.findRentalsByStatus(Status.APPROVED);
+    }
 }

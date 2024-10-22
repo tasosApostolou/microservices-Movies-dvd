@@ -10,6 +10,7 @@ import lombok.Setter;
 public class RentalsInsertDTO {
     private Long movieId;
     private Long customerId;
-    public double price;
+    private double pricePerDay;
+    private int days;
 
 }

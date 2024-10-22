@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentalsReadOnlyDTO {
+    private Long id;
     public Long movieId;
     public Long customerId;
     public double price;
