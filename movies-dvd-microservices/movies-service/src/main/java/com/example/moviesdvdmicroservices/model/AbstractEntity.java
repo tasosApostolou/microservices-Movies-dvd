@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-//@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class)
 @DynamicInsert
 @NoArgsConstructor
 @Getter
