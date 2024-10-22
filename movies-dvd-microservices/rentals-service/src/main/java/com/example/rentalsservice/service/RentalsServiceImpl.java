@@ -54,6 +54,7 @@ public class RentalsServiceImpl implements IRentalsService{
             CustomerResponseDTO customerDTO = customerClient.getCustomer(rental.getCustomerId());
             RentalPlaceEvent rentalPlaceEvent = new  RentalPlaceEvent();
             rentalPlaceEvent.setId(rental.getId().toString());
+            rentalPlaceEvent.setMovieId(String.valueOf(rental.getMovieId()));
             rentalPlaceEvent.setEmail(customerDTO.getEmail());
             rentalPlaceEvent.setFirstname(customerDTO.getFirstname());
             rentalPlaceEvent.setLastname(customerDTO.getLastname());
