@@ -4,6 +4,7 @@ import com.example.moviesdvdmicroservices.Exception.EntityAlreadyExistsException
 import com.example.moviesdvdmicroservices.Exception.EntityNotFoundException;
 import com.example.moviesdvdmicroservices.client.UserClient;
 import com.example.moviesdvdmicroservices.dto.CustomerRegisterDTO;
+import com.example.moviesdvdmicroservices.dto.CustomerUpdateDTO;
 import com.example.moviesdvdmicroservices.dto.UserInfoResponse;
 import com.example.moviesdvdmicroservices.dto.UserRegisterDTO;
 import com.example.moviesdvdmicroservices.event.CustomerPlacedEvent;
@@ -86,36 +87,36 @@ public class CustomerServiceImpl implements ICustomerService {
         }
         return customer;
     }
-//
-//    @Override
-//    public Customer updateCustomer(CustomerUpdateDTO customerDTO) throws EntityNotFoundException {
-//        Customer customer;
-//        Customer customerToUpdate;
-//        try {
-//            customer = customerRepository.findById(customerDTO.getId()).orElseThrow(()-> new EntityNotFoundException(Customer.class, customerDTO.getId()));
-//            customerToUpdate = Mapper.mapToCustomer(customerDTO);
-//            customerToUpdate.addUser(customer.getUser());
-//            customer = customerRepository.save(customerToUpdate);
-//            log.info("Customer with id: "+ customer.getId()+ " was updated");
-//        }catch (EntityNotFoundException e){
-//            log.error(e.getMessage());
-//            throw e;
-//        }
-//        return customer;
-//    }
-//
-//    @Override
-//    @Transactional
-//    public Customer deleteCustomer(Long id) throws EntityNotFoundException {
-//        Customer customer;
-//        try {
-//            customer =  customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Customer.class,id));
-//            customerRepository.deleteById(id);
-//            log.info("Customer user deleted");
-//        }catch (EntityNotFoundException e){
-//            log.error(e.getMessage());
-//            throw e;
-//        }
-//        return customer;
-//    }
+
+    @Override
+    public Customer updateCustomer(CustomerUpdateDTO customerDTO) throws EntityNotFoundException {
+        Customer customer;
+        Customer customerToUpdate;
+        try {
+            customer = customerRepository.findById(customerDTO.getId()).orElseThrow(()-> new EntityNotFoundException(Customer.class, customerDTO.getId()));
+            customerToUpdate = new Customer(customerDTO.getId(),customerDTO.getLastname(),customerDTO.getLastname());
+            customerToUpdate.addUserClaims(customer.getUserClaims());
+            customer = customerRepository.save(customerToUpdate);
+            log.info("Customer with id: "+ customer.getId()+ " was updated");
+        }catch (EntityNotFoundException e){
+            log.error(e.getMessage());
+            throw e;
+        }
+        return customer;
+    }
+
+    @Override
+    @Transactional
+    public Customer deleteCustomer(Long id) throws EntityNotFoundException {
+        Customer customer;
+        try {
+            customer =  customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Customer.class,id));
+            customerRepository.deleteById(id);
+            log.info("Customer user deleted");
+        }catch (EntityNotFoundException e){
+            log.error(e.getMessage());
+            throw e;
+        }
+        return customer;
+    }
 }

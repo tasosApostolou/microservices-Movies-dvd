@@ -14,6 +14,6 @@ public interface ICustomerService {
     Customer registerCustomer(CustomerRegisterDTO dto) throws EntityAlreadyExistsException;
 //    List<Customer> getCustomersByLastname(String lastname) throws EntityNotFoundException;
     Customer getCustomerById(Long id) throws EntityNotFoundException;
-//    Customer updateCustomer(CustomerUpdateDTO customerDTO) throws EntityNotFoundException;
-//    Customer deleteCustomer(Long id) throws EntityNotFoundException;
+    Customer updateCustomer(CustomerUpdateDTO customerDTO) throws EntityNotFoundException;
+    Customer deleteCustomer(Long id) throws EntityNotFoundException;
 }
