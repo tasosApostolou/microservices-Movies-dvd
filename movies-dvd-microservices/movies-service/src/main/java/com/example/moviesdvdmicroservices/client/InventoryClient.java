@@ -14,8 +14,8 @@ public interface InventoryClient {
     @Retry(name = "inventory")
     InventoryAddResponse AddNewMovie(@RequestParam Long movieId, @RequestParam int quantity);
     Logger log = LoggerFactory.getLogger(InventoryClient.class);
-    default boolean fallbackMethod(Long movieId,Throwable throwable){
+    default InventoryAddResponse fallbackMethod(Long movieId, int quantity, Throwable throwable){
         log.info("Cannot get inventory for movieId {}, failure reason: {}",movieId,throwable.getMessage());
-        return false;
+        return new InventoryAddResponse(movieId,quantity);
     }
 }
