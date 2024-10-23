@@ -23,7 +23,7 @@ public class InventoryMovieController {
     private final IInventoryService inventoryService;
 
     @GetMapping("/available/{movieId}")
-    public boolean getDirectorsByLastname(@PathVariable("movieId") Long movieId) {
+    public boolean isAvailableByMovieId(@PathVariable("movieId") Long movieId) {
         boolean available = false;
 
         try {

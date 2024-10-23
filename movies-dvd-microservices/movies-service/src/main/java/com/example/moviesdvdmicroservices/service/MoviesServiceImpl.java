@@ -1,7 +1,9 @@
 package com.example.moviesdvdmicroservices.service;
 
+import com.example.moviesdvdmicroservices.client.InventoryClient;
 import com.example.moviesdvdmicroservices.dto.ActorDTO.ActorInsertDTO;
 import com.example.moviesdvdmicroservices.dto.CategoryDTO.CategoryInsertDTO;
+import com.example.moviesdvdmicroservices.dto.InventoryAddResponse;
 import com.example.moviesdvdmicroservices.dto.MoviesDTO.MoviesInsertDTO;
 import com.example.moviesdvdmicroservices.exceptions.EntityNotFoundException;
 import com.example.moviesdvdmicroservices.mapper.Mapper;
@@ -28,6 +30,7 @@ public class MoviesServiceImpl implements IMoviesService{
     private final DirectorsRepository directorsRepository;
     private final CategoryRepository categoryRepository;
     private final ActorRepository actorRepository;
+    private final InventoryClient inventoryClient;
     @Override
     @Transactional
     public Movies insert(MoviesInsertDTO dto) throws Exception {
@@ -40,9 +43,11 @@ public class MoviesServiceImpl implements IMoviesService{
                 return directorsRepository.save(newDirector);
             });
             movie = Mapper.mapToMovie(dto); // convert dto to model class
+            InventoryAddResponse inventoryAddResponse = inventoryClient.AddNewMovie(movie.getId(), dto.getCountCopies());
             movie.setDirector(director);
-//            movie.setIsActive(dto.getCountCopies() > 0);
+            movie.setIsActive(dto.getCountCopies() > 0);
             movie = moviesRepository.save(movie);
+
             addCategoriesToMovie(movie,dto.getCategories());
             addActorsToMovie(movie,dto.getActors());
             if (movie.getId() == null) {
