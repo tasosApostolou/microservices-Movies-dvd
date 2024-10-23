@@ -10,8 +10,8 @@ import org.springframework.web.service.annotation.GetExchange;
 
 public interface CustomerClient {
     @GetExchange("api/customer/{customerID}")
-    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
-    @Retry(name = "inventory")
+    @CircuitBreaker(name = "getCustomer", fallbackMethod = "fallbackMethod")
+    @Retry(name = "getCustomer")
     CustomerResponseDTO getCustomer(@PathVariable Long customerID);
     Logger log = LoggerFactory.getLogger(InventoryClient.class);
     default boolean fallbackMethod(Long customerID,Throwable throwable){
