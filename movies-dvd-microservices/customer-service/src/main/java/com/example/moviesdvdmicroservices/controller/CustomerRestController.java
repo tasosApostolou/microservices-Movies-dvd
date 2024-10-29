@@ -9,6 +9,7 @@ import com.example.moviesdvdmicroservices.dto.CustomerReadOnlyDTO;
 import com.example.moviesdvdmicroservices.dto.CustomerRegisterDTO;
 import com.example.moviesdvdmicroservices.model.Customer;
 import com.example.moviesdvdmicroservices.service.ICustomerService;
+import com.example.moviesdvdmicroservices.service.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,8 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -33,6 +32,7 @@ public class CustomerRestController {
     private final ICustomerService customerService;
     private final CustomerUpdateValidator updateValidator;
     private final CustomerRegisterValidator registerCustomerValidator;
+    private final JwtService jwtService;
 
     @Operation(summary = "Register a customer")
     @ApiResponses(value = {
@@ -93,6 +93,15 @@ public class CustomerRestController {
                     content = @Content)})
     @GetMapping("/{customerID}")
     public ResponseEntity<CustomerReadOnlyDTO> getCustomer(@PathVariable("customerID") Long id) {
+//
+//        String actualToken = token.startsWith("Bearer ") ? token.substring(7) : authHeader;
+//
+//        String username = jwtService.extractUsername(actualToken);
+//
+//        System.out.println("====================================================================================="+authHeader.replace("Bearer ",""));
+//
+//        System.out.println("====================================================================================="+jwtService.extractUserRole(actualToken));
+
         Customer customer;
 
         try {

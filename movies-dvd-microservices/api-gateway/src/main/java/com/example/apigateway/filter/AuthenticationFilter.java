@@ -1,6 +1,7 @@
 package com.example.apigateway.filter;
 
 import com.example.apigateway.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -15,7 +16,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     private RouteValidator validator;
 
     //    @Autowired
-//    private RestTemplate template;
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -42,9 +42,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 //
 //                    request = exchange.getRequest()
 //                            .mutate()
-//                            .header("loggedInUser",jwtUtil.extractUsername(authHeader))
-////                            .header("loggedInUser",authHeader)
 //
+////                            .header("loggedInUser", jwtUtil.extractUsername(authHeader))
+//                            .header("loggedInUser",authHeader)
 //                            .build();
 //                } catch (Exception e) {
 //                    System.out.println("invalid access...!");
@@ -54,6 +54,16 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 //            return chain.filter(exchange.mutate().request(request).build());
 //        });
 //    }
+//
+//    public static class Config {
+//
+//    }
+//}
+
+
+
+
+
 
         return (exchange, chain) -> {
                 String token = extractJwtToken(exchange.getRequest().getHeaders());

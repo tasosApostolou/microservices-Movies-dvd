@@ -1,5 +1,6 @@
 //package com.example.moviesdvdmicroservices.config;
 //
+//import com.example.moviesdvdmicroservices.JWT.JwtService;
 //import jakarta.servlet.FilterChain;
 //import jakarta.servlet.ServletException;
 //import jakarta.servlet.http.HttpServletRequest;
@@ -18,10 +19,10 @@
 //public class JwtRequestFilter extends OncePerRequestFilter {
 //
 //    private final UserDetailsServiceImpl userDetailsService;
-//    private final JwtUtil jwtUtil;
+//    private final JwtService jwtUtil;
 //
 //    @Autowired
-//    public JwtRequestFilter(UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil) {
+//    public JwtRequestFilter(UserDetailsServiceImpl userDetailsService, JwtService jwtUtil) {
 //        this.userDetailsService = userDetailsService;
 //        this.jwtUtil = jwtUtil;
 //    }

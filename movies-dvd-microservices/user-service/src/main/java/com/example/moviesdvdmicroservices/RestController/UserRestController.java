@@ -2,34 +2,37 @@ package com.example.moviesdvdmicroservices.RestController;
 
 
 import com.example.moviesdvdmicroservices.Exceptions.UserNotFoundException;
+import com.example.moviesdvdmicroservices.JWT.AuthendicationResponseDTO;
 import com.example.moviesdvdmicroservices.JWT.JwtService;
 import com.example.moviesdvdmicroservices.UserDTO.*;
 import com.example.moviesdvdmicroservices.Validator.UserInsertValidator;
 import com.example.moviesdvdmicroservices.Validator.UserUpdateValidator;
+import com.example.moviesdvdmicroservices.config.UserDetailsServiceImpl;
 import com.example.moviesdvdmicroservices.model.User;
 import com.example.moviesdvdmicroservices.service.IUserService;
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -42,7 +45,7 @@ public class UserRestController {
     private final UserUpdateValidator updateValidator;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Operation(summary = "Get a User by id")
     @ApiResponses(value = {
@@ -144,14 +147,40 @@ public class UserRestController {
     }
 
     @PostMapping("/token")
-    public String login(@RequestBody AuthRequest authRequest) {
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-        if (authenticate.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
-        } else {
-            throw new RuntimeException("invalid access");
+    public AuthendicationResponseDTO login(@RequestBody AuthRequest authRequest,HttpServletResponse response) throws BadCredentialsException, DisabledException, UsernameNotFoundException, IOException {
+//        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+//        if (authenticate.isAuthenticated()) {
+//            String token =  jwtService.generateToken(authRequest.getUsername());
+//            return new AuthendicationResponseDTO(token);
+////            final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
+////
+////            return jwtService.generateToken(userDetails.getUsername());
+//        } else {
+//            throw new RuntimeException("invalid access");
+//        }
+
+
+        User user;
+//        LoginResponseTokenDTO responseDTO;
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            user = userService.getUserByUsername(authRequest.getUsername());
+//            responseDTO = Mapper.mapToLoginResponseDTO(user);
+        } catch (BadCredentialsException | UserNotFoundException e) {
+            throw new BadCredentialsException("Incorrect username or password!");
+        } catch (DisabledException disabledException) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User is not activated");
+            return null;
         }
+
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
+
+        final String jwt = jwtService.generateToken(userDetails.getUsername(),user.getId(), String.valueOf(user.getRole()).toLowerCase());
+
+        return new AuthendicationResponseDTO(jwt);
     }
+
+
 
     @GetMapping("/validate")
     public String validateToken(@RequestParam("token") String token) {

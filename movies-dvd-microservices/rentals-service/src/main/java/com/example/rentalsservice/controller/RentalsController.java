@@ -23,7 +23,8 @@ public class RentalsController {
     private final IRentalsService rentalsService;
 
     @PostMapping("/add")
-    public ResponseEntity<RentalsReadOnlyDTO> addRental(@RequestBody RentalsInsertDTO insertDTO){
+    public ResponseEntity<RentalsReadOnlyDTO> addRental(@RequestBody RentalsInsertDTO insertDTO, @RequestHeader("Authorization") String token){
+
         Rentals rental;
         try{
 

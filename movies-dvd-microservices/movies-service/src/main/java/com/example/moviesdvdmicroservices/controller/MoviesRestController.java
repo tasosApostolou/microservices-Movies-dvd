@@ -31,6 +31,7 @@ public class MoviesRestController {
 
     private final IMoviesService moviesService;
 //    private final MoviesInsertValidator moviesInsertValidator;
+    private final JwtUtil jwtUtil;
     @Operation(summary = "Add a Movie")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Movie added",
@@ -41,7 +42,12 @@ public class MoviesRestController {
             @ApiResponse(responseCode = "503", description = "Service Unavailable",
                     content = @Content)})
     @PostMapping("/add")
-    public ResponseEntity<MoviesReadOnlyDTO> addMovie(@Valid @RequestBody MoviesInsertDTO dto, BindingResult bindingResult) {
+    public ResponseEntity<MoviesReadOnlyDTO> addMovie(@Valid @RequestBody MoviesInsertDTO dto,@RequestHeader("Authorization") String token, BindingResult bindingResult) {
+        String actualToken = token.startsWith("Bearer ") ? token.substring(7) : token;
+
+        String username = jwtUtil.extractUsername(actualToken);
+
+        System.out.println("====================================================================================="+username);
 //        moviesInsertValidator.validate(dto, bindingResult);
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

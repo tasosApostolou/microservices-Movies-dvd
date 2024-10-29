@@ -1,14 +1,12 @@
 package com.example.moviesdvdmicroservices.UserDTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+//@Getter
+//@Setter
+@Data
 public class AuthRequest {
     private String username;
     private String password;

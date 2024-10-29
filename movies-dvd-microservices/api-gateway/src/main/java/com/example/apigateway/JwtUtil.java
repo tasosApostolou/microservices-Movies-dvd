@@ -3,8 +3,10 @@ package com.example.apigateway;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -28,6 +30,9 @@ public class JwtUtil {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+    public String extractUserRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
+    }
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
@@ -41,8 +46,9 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public void validateToken(final String token) {
+    public boolean validateToken(final String token) {
         Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
+        return true;
     }
 
 
@@ -51,4 +57,5 @@ public class JwtUtil {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
 }
